@@ -35,7 +35,7 @@ export const NoteView = () => {
           fullWidth
           multiline
           placeholder="What happened today?"
-          minRows={6}
+          minRows={4}
           sx={{ border: 0, mb: 1 }}
         />
       </Grid>
