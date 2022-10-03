@@ -19,9 +19,11 @@ const authSlice = createSlice({
       state.email = action.payload.email
       state.displayName = action.payload.displayName
       state.photoURL = action.payload.photoURL
+      state.errorMessage = null
     },
     logout: (state, action) => {
-
+      state = initialState
+      state.errorMessage = action.payload.message
     },
     checkingCredentials: (state) => {
       state.status = 'checking'
