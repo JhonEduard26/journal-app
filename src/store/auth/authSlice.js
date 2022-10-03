@@ -14,7 +14,11 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-
+      state.status = 'authenticated'
+      state.uid = action.payload.uid
+      state.email = action.payload.email
+      state.displayName = action.payload.displayName
+      state.photoURL = action.payload.photoURL
     },
     logout: (state, action) => {
 
