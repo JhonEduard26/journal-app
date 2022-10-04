@@ -1,33 +1,38 @@
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link as RouterLink } from 'react-router-dom'
 import { Button, Grid, Link, TextField } from '@mui/material'
+
 import { AuthLayout } from '../layout/AuthLayout'
 import { useForm } from '../../hooks/useForm'
+import { startCreatingUserWithEmailPassword } from '../../store/auth'
 
 const formData = {
-  name: 'jhon',
-  email: 'jhon@mail.com',
-  password: '123456',
-  password2: '123456'
+  name: '',
+  email: '',
+  password: '',
 }
 
 const formValidations = {
   name: [(value) => value.length >= 1, 'Name is required'],
   email: [(value) => value.includes('@'), 'Email must have symbol "@"'],
-  password: [(value) => value.length >= 6, 'Password must have more that 5 characters'],
-  password2: [(value) => value === formData.password, 'Password must have more that 5 characters']
+  password: [(value) => value.length >= 6, 'Password must have more that 5 characters']
 }
 
 export const RegisterPage = () => {
+  const [formSubmitted, setFormSubmitted] = useState(false)
+  const dispatch = useDispatch()
 
-  const [formValues, onInputChange, _, isFormValid] = useForm(formData, formValidations)
-
-  const { name, email, password, password2 } = formValues
-  console.log(isFormValid)
-  const { nameValid, emailValid, passwordValid, password2Valid } = isFormValid
+  const [formValues, onInputChange, _, formValidation, isFormValid] = useForm(formData, formValidations)
+  const { name, email, password } = formValues
+  const { nameValid, emailValid, passwordValid } = formValidation
 
   const onSubmit = (event) => {
     event.preventDefault()
-    console.log(formValues)
+    setFormSubmitted(true)
+    if (!isFormValid) return
+
+    dispatch(startCreatingUserWithEmailPassword(formValues))
   }
 
   return (
@@ -44,21 +49,21 @@ export const RegisterPage = () => {
               name="name"
               value={name}
               onChange={onInputChange}
-              error={!!nameValid}
-              helperText={nameValid}
+              error={!!nameValid && formSubmitted}
+              helperText={formSubmitted && nameValid}
             />
           </Grid>
           <Grid item xs={12} sx={{ mb: 1 }}>
             <TextField
               fullWidth
               label="Email"
-              type="email"
+              type="text"
               placeholder="youremail@mail.com"
               name="email"
               value={email}
               onChange={onInputChange}
-              error={!!emailValid}
-              helperText={emailValid}
+              error={!!emailValid && formSubmitted}
+              helperText={formSubmitted && emailValid}
             />
           </Grid>
           <Grid item xs={12} sx={{ mb: 1 }}>
@@ -70,21 +75,8 @@ export const RegisterPage = () => {
               name="password"
               value={password}
               onChange={onInputChange}
-              error={!!passwordValid}
-              helperText={passwordValid}
-            />
-          </Grid>
-          <Grid item xs={12} sx={{ mb: 1 }}>
-            <TextField
-              fullWidth
-              label="Confirm password"
-              type="password"
-              placeholder="*********"
-              name="password2"
-              value={password2}
-              onChange={onInputChange}
-              error={!!password2Valid}
-              helperText={password2Valid}
+              error={!!passwordValid && formSubmitted}
+              helperText={formSubmitted && passwordValid}
             />
           </Grid>
 
