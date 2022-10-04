@@ -46,3 +46,24 @@ export const registerWithEmailPassword = async ({ name, email, password }) => {
     }
   }
 }
+
+export const signInEmailPassword = async ({ email, password }) => {
+  try {
+    const result = await signInWithEmailAndPassword(firebaseAuth, email, password)
+    const { displayName, uid, photoURL } = result.user
+
+    return {
+      ok: true,
+      displayName,
+      uid,
+      photoURL,
+      email,
+    }
+
+  } catch (error) {
+    return {
+      ok: false,
+      message: error.message
+    }
+  }
+}

@@ -23,6 +23,7 @@ const authSlice = createSlice({
     },
     logout: (state, action) => {
       state.errorMessage = action.payload.message
+      state.status = 'no-authenticated'
     },
     checkingCredentials: (state) => {
       state.status = 'checking'
