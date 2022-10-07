@@ -30,9 +30,11 @@ export const startLoadingNotes = () => {
 
     const notes = []
     const docs = await getDocs(collection(firebaseDB, `${uid}/journal/notes`))
-    docs.forEach((doc) => {
-      notes.push(doc.data())
+    docs.forEach(doc => {
+      notes.push({ id: doc.id, ...doc.data() })
     })
+
+    console.log(notes)
 
     dispatch(setNotes(notes))
   }
