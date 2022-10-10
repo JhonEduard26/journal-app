@@ -1,5 +1,7 @@
 export const fileUpload = async (file) => {
-  if (!file) throw new Error('File doesn\'t exists')
+  if (!file) return null
+  // if (!file) throw new Error('File doesn\'t exists')
+
   const cloudinaryUrl = 'https://api.cloudinary.com/v1_1/dmwa2i3mk/upload'
 
   const formData = new FormData()
@@ -16,7 +18,8 @@ export const fileUpload = async (file) => {
     const cloudData = await resp.json()
     return cloudData.secure_url
   } catch (error) {
-    throw new Error(error.message)
+    return null
+    // throw new Error(error.message)
   }
 
 }
